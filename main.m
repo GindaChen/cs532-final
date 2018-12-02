@@ -80,26 +80,39 @@ d = (1:length(y))';
 % X3: Our new lasso matrix :)
 % Q2: Will the constant coefficient affect the result of LASSO?
 tic
-N = 10;
+L = length(a)
+f = 365 * (1:3);
+f = [ f 90 ];
+N = length(f);
 X3 = zeros(L, 2 + 2 * N);
 X3(:,1) = ones(L,1);
-X3(:,2) = d./L;
-for i = 1:N
-    X3(:, 2 + 2*i - 1) = cos(x/i);
-    X3(:, 2 + 2*i) = sin(x/i);
+X3(:,2) = d ./ L;
+
+for i = 1:length(f)
+    X3(:, 2 + 2*i - 1)  = cos(x/f(i));
+    X3(:, 2 + 2*i)      = sin(x/f(i));
 end
 toc
 
+% X4: To probe the lasso problem in X3
+% Q2: Will the constant coefficient affect the result of LASSO?
+% y = a;
+% tic
+% N = 10;
+% X4 = zeros(L, 2 * N);
+% for i = 1:N
+%     X3(:, 2*i - 1) = cos(x/i);
+%     X3(:, 2*i) = sin(x/i);
+% end
+% toc
+% X = X4;
+% size(X)
+% 
+% y = a - 
 
 X = X3;
-size(X)
 
-
-w = 0; % zeros(N+2, 1);
-% w = [ 60 0 0 ...
-%     20 20 ...
-%     0.01 0.01 ]'; 
-
+w = rand(N * 2 + 2,1);
 tic
 lambda = 0.1;
 w = ista_solve(X, y ,w, lambda)
@@ -108,9 +121,14 @@ toc
 z = X*w;
 
 hold on
+figure()
 plot(d',z)
-plot(a,z)
+% plot(a,z)
 hold off
+figure()
+stem(w)
+
+err = norm(y - z)
 
 % Ridge
 
@@ -126,6 +144,7 @@ T = length(a);
 
 %% Matlab Implementation
 y = avetemp_data;
+T = length(y);
 d = (1:T)';
 L = length(d);
 % Initialize x
@@ -144,6 +163,10 @@ X = [ ones(L,1) d  cos(2 * pi * d / Tseason) sin(2 * pi * d / Tseason) cos(2 * p
 
 % Lease Square
 w_ls = inv(X' * X) * X' * y;
+
+z = X * w_ls
+
+err = norm(z - y)
 
 
 

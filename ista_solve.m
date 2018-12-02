@@ -11,8 +11,8 @@ function [w, it] = ista_solve( A, b, w, lambda )
 	
 	[~,n] = size(A);
    
-    w = rand(n,1);
-%  	w = zeros(n,1);         % start point for the iteration
+%     w = rand(n,1);
+%   	w = zeros(n,1);         % start point for the iteration
 	it = 1;
 	for i = 1:MAX_ITER               
 		z = w - tau*(A'*(A*w-b));                        % Landweber
