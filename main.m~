@@ -94,5 +94,3 @@ plot(d,y);
 hold off
 
 err = norm(y-a)
-
-
