@@ -11,8 +11,15 @@ $$
 + x_4 cos(2x_6\pi d/T_s) + x_5 sin(2x_6\pi d/T_s)|
 $$
 
+## Dataset
+
+McGuire AFB data from 1955-2010, each day, average temperature.
+
+- [McGuireAFB.data.csv](./data/McGuireAFB.data.csv) 
+- [McGuireAFB.time.csv](./data/McGuireAFB.time.csv) 
 
 
+The dataset used in the paper.
 
 
 
