@@ -11,7 +11,7 @@ date = csvread("data/McGuireAFB.time.csv"); % The date seemed to be a little wie
 figure(1)
 plot(date, temperature);
 datetick('x', 'yyyy-mm-dd');
-title('McGuire AFB Temperature 1950-2010');
+title('McGuire AFB Temperature 1955-2010');
 
 %%% ? How would you fit the graph?
 
@@ -59,31 +59,42 @@ y = temperature(x);
 figure(3);
 
 subplot(3,1,1);
-A = 20; % (max(y) - min(y))/2;
-b = mean(y);
-phi = 120;
+A = 20; b = mean(y); phi = 120;
 T = 365 / (2 * pi);
+
 z = A * sin((x - phi)/T) + b;
-error = norm(y - z)^2;
-hold on;
-plot(x,y, ':','LineWidth', 1); 
-plot(x,z, 'LineWidth',2);
-hold off;
-title("Fit data with sin(x)-liked function");
+error = norm(y - z)^2 / length(x);
+hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
+title("Fit data with sin(x)-liked function (error = " + num2str(error, 3) + ")");
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
-txt = "Error = ' + num2str(error);
-text([-2 2], txt);
 
 
 
 subplot(3,1,2);
+
+
 subplot(3,1,3);
+
+A1 = 10; A2 = 20;
+phi1 = 120; phi2 = 120;
+b = mean(y); 
+T = 365 / (2 * pi);
+
+z = A1 * sin((x - phi1)/T) + A2 * sin( 2 * (x - phi2)/T) + b;
+error = norm(y - z)^2 / length(x);
+hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
+title("Fit data with sin(x)-liked function (error = " + num2str(error, 3) + ")");
+D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
+annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
 
 
 
 %% 1.4 Factor of Gobal Warming
+
+
+
 
 
 %% 1.5 How to build a Basis Function (Matrix)
