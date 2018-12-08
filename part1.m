@@ -1,4 +1,4 @@
-%% Part1. Warm-up and Basis Function
+%% Part1 Warm-up and Basis Function
 
 % Load Data
 %    - date: record of date
@@ -16,7 +16,7 @@ title('McGuire AFB Temperature 1955-2010');
 %%% ? How would you fit the graph?
 
 
-%% 1.2 See data in different range
+%% 1.2 See data in different ranges
 figure(2)
 
 subplot(3,1,1)   % [11 Years]
@@ -39,23 +39,13 @@ datetick('x', 'yyyy-mm-dd');
 title('McGuire AFB Temperature 1955-1957 (~2yrs)');
 
 %% 1.3 Try to fit data by different functions
-% Which would be the best fit of data?
-% f(x) = x
-% f(x) = exp(x)
-% f(x) = log(x)
-% f(x) = sin(x) <- yeah
-% 
-% But... sin(x) alone is not gonna work.
-% Let's try some interesting functions to fit the data
-% 
-% 1. sin(x)
-% 2. sin(x) + cos(x)
-% 3. sin(x) + sin(2x)
 
 x = 1:365*2; 
 y = temperature(x);
+close;
 
-% figure();
+% 1. sin(x)
+
 figure(3);
 
 subplot(3,1,1);
@@ -63,16 +53,29 @@ A = 20; b = mean(y); phi = 120;
 T = 365 / (2 * pi);
 
 z = A * sin((x - phi)/T) + b;
-error = norm(y - z)^2 / length(x);
+error = norm(y - z')^2 / length(x);
 hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
 title("Fit data with sin(x)-liked function (error = " + num2str(error, 3) + ")");
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
-
+% 2. sin(x) + cos(x)
 
 subplot(3,1,2);
 
+A1 = 17; A2 = 10;
+phi1 = 140; phi2 = 160;
+b = mean(y); 
+T = 365 / (2 * pi);
+
+z = A1 * sin((x - phi1)/T) + A2 * cos( (x - phi2)/T) + b;
+error = norm(y - z')^2 / length(x);
+hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
+title("Fit data with sin(x)+cos(x)-liked function (error = " + num2str(error, 3) + ")");
+D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
+annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
+
+% 3. sin(x) + sin(2x)
 
 subplot(3,1,3);
 
@@ -82,13 +85,11 @@ b = mean(y);
 T = 365 / (2 * pi);
 
 z = A1 * sin((x - phi1)/T) + A2 * sin( 2 * (x - phi2)/T) + b;
-error = norm(y - z)^2 / length(x);
+error = norm(y - z')^2 / length(x);
 hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
-title("Fit data with sin(x)-liked function (error = " + num2str(error, 3) + ")");
+title("Fit data with sin(x)+sin(2x)-liked function (error = " + num2str(error, 3) + ")");
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
-
-
 
 
 %% 1.4 Factor of Gobal Warming

@@ -2,6 +2,14 @@
 
 
 
+## Animation
+
+[Local Warming or Global Warming?](https://beta.observablehq.com/@gindachen/function-slider)
+
+
+
+
+
 ## Model
 
 
