@@ -2,3 +2,5 @@
 data/.DS_Store
 data/arx
 .ipynb_checkpoints
+part1.m~
+*.m~

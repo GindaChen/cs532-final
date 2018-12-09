@@ -42,7 +42,6 @@ title('McGuire AFB Temperature 1955-1957 (~2yrs)');
 
 x = 1:365*2; 
 y = temperature(x);
-close;
 
 % 1. sin(x)
 
@@ -79,15 +78,22 @@ annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
 subplot(3,1,3);
 
-A1 = 10; A2 = 10;
-phi1 = 100; phi2 = 160;
-b = mean(y); 
-T = 365 / (2 * pi);
+A1 = 2; A2 = 23.7;
+phi1 = 0; phi2 = 107;
+b = 53; 
+T1 = 60;
+T2 = 5.5;
 
-z = A1 * sin((x - phi1)/T) + A2 * sin( 2 * (x - phi2)/T) + b;
-error = norm(y - z')^2 / length(x);
-hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
-title("Fit data with sin(x)+sin(2x)-liked function (error = " + num2str(error, 3) + ")");
+z1 = A1 * sin((x - phi1)/T);
+z2 = A2 * sin((x - phi2)/T);
+z =  z1 + z2 + b;
+error = norm(y - z')^2 / length(x)
+
+hold on; 
+% plot(x,z1);plot(x,z2);
+plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); 
+hold off;
+title("Fit data with sin(x)+sin(x/2)-liked function (error = " + num2str(error, 3) + ")");
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
@@ -99,3 +105,6 @@ annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
 
 %% 1.5 How to build a Basis Function (Matrix)
+
+% Construct a series of 
+
