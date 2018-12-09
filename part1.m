@@ -90,7 +90,6 @@ z =  z1 + z2 + b;
 error = norm(y - z')^2 / length(x)
 
 hold on; 
-% plot(x,z1);plot(x,z2);
 plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); 
 hold off;
 title("Fit data with sin(x)+sin(x/2)-liked function (error = " + num2str(error, 3) + ")");
@@ -105,6 +104,22 @@ annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
 
 %% 1.5 How to build a Basis Function (Matrix)
-
+% Since we are using a combination of sin/cos to construct our "data"
+% We need an efficient way to construct this matrix `A`.
+% This is called a basis matrix, which contains orthogonal bases
+% as different columns.
+% 
 % Construct a series of 
+% [ x1 sin(x1) sin(2*x1) cos(x1) cos(2*x1)]
+% [ x2 sin(x2) sin(2*x2) cos(x2) cos(2*x2)]
+
+x = (1:365*2)';
+T_yr = 365.25;
+t = [1:10] * 365.25;  % Cycle: [1 2 3 4 ... 10]
+% t = [1:10 1/T_yr 30/T_yr 30/T_yr 60/T_yr 120/T_yr] * 365.25;
+A = [ ones(size(x)) x sin(x*t) cos(x*t)]; % 
+A = A ./ max(A); % Regularize (not strictly correct though...)
+
+% Tada! This is the basis matrix
+A
 

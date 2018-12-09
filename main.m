@@ -181,8 +181,7 @@ y = x(1) + x(2) * d ...
          + x(6) * sin(x(7) * 2 *pi * d / (365.25 * 10.7));
      
 
-         
-     
+
 hold on
 figure()
 plot(d,a);;
