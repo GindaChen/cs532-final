@@ -2,7 +2,7 @@
 % Temperature Data in McGuireAFB from 1955-2010
 
 avetemp_data = csvread("./data/McGuireAFB.data.csv");
-
+avetemp = avetemp_data;
 
 
 %% 1. Select a sin/cos function to approximate the trend

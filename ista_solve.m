@@ -6,14 +6,11 @@ function [w, it] = ista_solve( A, b, w, lambda )
 	
 	MAX_ITER = 1e6;         % maximum number of iterations
 	TOL = 1e-5;             % convergence tolerance
-	
 	tau = 1/norm(A)^2;      % choose stepsize
 	
 	[~,n] = size(A);
    
-%     w = rand(n,1);
-%   	w = zeros(n,1);         % start point for the iteration
-	it = 1;
+    it = 1;
 	for i = 1:MAX_ITER               
 		z = w - tau*(A'*(A*w-b));                        % Landweber
 		wold = w;                                        % store old x

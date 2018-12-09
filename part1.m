@@ -4,12 +4,12 @@
 %    - date: record of date
 %    - temperature: the corresponding temperature 
 temperature = csvread("data/McGuireAFB.data.csv");
-date = csvread("data/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
+dates = csvread("data/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
 
 
 %% 1.1 Show basic data property
 figure(1)
-plot(date, temperature);
+plot(dates, temperature);
 datetick('x', 'yyyy-mm-dd');
 title('McGuire AFB Temperature 1955-2010');
 
@@ -21,20 +21,20 @@ figure(2)
 
 subplot(3,1,1)   % [11 Years]
 slice = 1:365*11; % Choose 1 ~ 365*11 days of the year
-plot(date(slice), temperature(slice));
+plot(dates(slice), temperature(slice));
 datetick('x', 'yyyy-mm-dd');
 title('McGuire AFB Temperature 1955-1966 (~11yrs)');
 
 
 subplot(3,1,2)   % [5 Years]
 slice = 1:365*5; % Choose 1 ~ 365*5 days of the year
-plot(date(slice), temperature(slice));
+plot(dates(slice), temperature(slice));
 datetick('x', 'yyyy-mm-dd');
 title('McGuire AFB Temperature 1955-1960 (~5yrs)');
 
 subplot(3,1,3)   % [2 Years]
 slice = 1:365*2; % Choose 1 ~ 365*2 days of the year
-plot(date(slice), temperature(slice));
+plot(dates(slice), temperature(slice));
 datetick('x', 'yyyy-mm-dd');
 title('McGuire AFB Temperature 1955-1957 (~2yrs)');
 
@@ -97,13 +97,7 @@ D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
 
-%% 1.4 Factor of Gobal Warming
-
-
-
-
-
-%% 1.5 How to build a Basis Function (Matrix)
+%% 1.4 How to build a Basis Function (Matrix)
 % Since we are using a combination of sin/cos to construct our "data"
 % We need an efficient way to construct this matrix `A`.
 % This is called a basis matrix, which contains orthogonal bases
@@ -121,5 +115,22 @@ A = [ ones(size(x)) x sin(x*t) cos(x*t)]; %
 A = A ./ max(A); % Regularize (not strictly correct though...)
 
 % Tada! This is the basis matrix
-A
+A;
+
+%% 1.5 Factor of Gobal Warming
+
+x = (1:365*2)';
+T_yr = 365.25;
+t = 365.25 * [ 
+     1.00  % Seasonal Cycle
+    10.78  % Solar Cycle
+     4.00  % US President Election
+]';
+
+A = [ ones(size(x)) x sin(x*t) cos(x*t)];
+A = A ./ max(A);
+
+
+
+
 
