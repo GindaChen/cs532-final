@@ -129,15 +129,8 @@ t = T_yr * [
      4.00  % US President Election]
     10.78  % Solar Cycle
     18.60  % Moon Declination angle changing cycle
-    88.00  % Volcanic Activity Periodicity
-   178.00  % Tidal Cycle
 ]';
 
 X = [ ones(size(x)) x sin(x*t) cos(x*t)];
 
 X = X ./ max(X);
-
-
-
-
-
