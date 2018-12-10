@@ -1,6 +1,4 @@
 %% Part2 
-temperature = csvread("data/McGuireAFB.data.csv");
-dates = csvread("data/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
 
 % --- WARN ---
 % Make sure the two matrix have same dimension
@@ -10,7 +8,49 @@ dates = csvread("data/McGuireAFB.time.csv"); % The date seemed to be a little wi
 % Once the matrix become big, it is hard to calculate
 % and it is also hard to stop the process...
 
-%% LASSO vs Ridge
+%% 1. Data Preperation
+temperature = csvread("data/McGuireAFB.data.csv");
+dates = csvread("data/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
+
+%% 2. Compare LASSO vs Ridge
+
+x = 1:length(temperature);
+x = x';
+y = temperature(x);
+T_yr = 365.25;
+
+c = (T_yr/(2*pi));
+t = c * [ 
+     0.50  % Undergrad Final Exam Cycle
+     1.00  % Seasonal Cycle
+     4.00  % US President Election]
+    10.78  % Solar Cycle
+    18.60  % Moon Declination angle changing cycle
+    88.00  % Volcanic Activity Periodicity
+]';
+
+% - 2.1 <Method 1. >
+
+% A        = [ sin(x./t) cos(x ./ t) ones(size(x))];
+% wdefault = [ ones(length(t) * 2,1) * 2000; 10;];
+
+% - 2.2 <Method 2. Fix const term to the average of the time series>
+
+A        = [ sin(x./t) cos(x ./ t) ones(size(x)) x];
+wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
+
+
+%% 3. Without Linear term
+
+
+
+%% 4. With Linear 
+% 4.1 Naive linear term
+
+% 4.2 Regularization of linear term
+
+%% 5. Weight of Linear Term
+
 
 
 
@@ -39,18 +79,17 @@ t = c * [
     10.78  % Solar Cycle
     18.60  % Moon Declination angle changing cycle
     88.00  % Volcanic Activity Periodicity
-   178.00  % Tidal Cycle
 ]';
 
-t = c * (1:10);
+% t = c * (1:10);
 
-A        = [ sin(x./t) cos(x ./ t) ones(size(x))];
-wdefault = [ ones(length(t) * 2,1) * 2000; 10;];
+% A        = [ sin(x./t) cos(x ./ t) ones(size(x))];
+% wdefault = [ ones(length(t) * 2,1) * 2000; 10;];
 
 % - 2.2 <Method 2. Fix const term to the average of the time series>
 
-% A        = [ sin(x./t) cos(x ./ t) ones(size(x)) x];
-% wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
+A        = [ sin(x./t) cos(x ./ t) ones(size(x)) x];
+wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
 
 % t = (1:10) * (2 * pi / T_yr); % t = (1:100) * (T_yr / 10);
 % y = temperature(x);
@@ -62,7 +101,8 @@ wdefault = [ ones(length(t) * 2,1) * 2000; 10;];
 % 3. Apply LASSO Model
 % - 3.1 (Optional) Rescale the matrix
 r = max(A); % Scale of the matrix
-A = A ./ r; % Regularize
+% A = A ./ r; % Regularize
+A(:,end) = A(:,end) ./ length(x);
 Aold = A;
 
 % - 3.2 Apply LASSO Model for multiple lambdas
