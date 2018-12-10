@@ -10,23 +10,48 @@ dates = csvread("data/McGuireAFB.time.csv"); % The date seemed to be a little wi
 % Once the matrix become big, it is hard to calculate
 % and it is also hard to stop the process...
 
-%% LASSO
+%% LASSO vs Ridge
+
+
+
+%% (Optional) Full LASSO
 
 % %%%%
 % 1. Data Process
-
-x = 1:365*2; % x = 1:length(temperature);
+% x = 1:365*2; % 
+x = 1:length(temperature);
+% x = 1:length(temperature);
 x = x';
+% x = x - 120;
 y = temperature(x);
 T_yr = 365.25;
 
 % %%%%
 % 2. Construct data matrix
 % - 2.1 <Method 1.>
-t = (1 : 10) * (2 * pi / T_yr);
-A = [ sin(x*t) cos(x*t) ones(size(x)) x ];
-wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
+% t = (1 : 10) * (2 * pi / T_yr);
+c = (T_yr/(2*pi));
+
+t = c * [ 
+     0.50  % Undergrad Final Exam Cycle
+     1.00  % Seasonal Cycle
+     4.00  % US President Election]
+    10.78  % Solar Cycle
+    18.60  % Moon Declination angle changing cycle
+    88.00  % Volcanic Activity Periodicity
+   178.00  % Tidal Cycle
+]';
+
+t = c * (1:10);
+
+A        = [ sin(x./t) cos(x ./ t) ones(size(x))];
+wdefault = [ ones(length(t) * 2,1) * 2000; 10;];
+
 % - 2.2 <Method 2. Fix const term to the average of the time series>
+
+% A        = [ sin(x./t) cos(x ./ t) ones(size(x)) x];
+% wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
+
 % t = (1:10) * (2 * pi / T_yr); % t = (1:100) * (T_yr / 10);
 % y = temperature(x);
 % y = y - y(1); %mean(y);
@@ -38,32 +63,36 @@ wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
 % - 3.1 (Optional) Rescale the matrix
 r = max(A); % Scale of the matrix
 A = A ./ r; % Regularize
+Aold = A;
 
-% - 3.2 Apply LASSO Model
-lambda = 10;
-w = ista_solve(A, y, wdefault, lambda)
+% - 3.2 Apply LASSO Model for multiple lambdas
+for lambda = [0.01, 1, 10] % [0.01 0.02 0.05 0.1 0.2 0.5 1 2 5 10 20]
+    A = Aold;
+    [w, it] = ista_solve(A, y, wdefault, lambda);
+    lambda
+    it 
+    % - 3.3 Derive result time series and error
+    z = A * w;
+    error = norm(y - z) / length(x)
 
-% - 3.3 Derive result time series and error
-z = A * w
-error = norm(y - z) / length(x)
+    % - 3.4 Plot result
+    figure(); 
 
-% - 3.4 Plot result
-figure(); 
+    subplot(2,1,1);
+    stem(w);
+    title("LASSO (\lambda = " + num2str(lambda, 2) +"): coefficient view ")
 
-subplot(2,1,1);
-stem(w);
-title("LASSO (\lambda = " + num2str(lambda, 2) +"): coefficient view ")
-
-subplot(2,1,2); hold on;
-plot(x, z);
-plot(x, y, ':');
-title("LASSO (\lambda = " + num2str(lambda, 2) +"): MSE = " + num2str(error, 3))
-hold off;
+    subplot(2,1,2); hold on;
+    plot(x, z);
+    plot(x, y, ':');
+    title("LASSO (\lambda = " + num2str(lambda, 2) +"): MSE = " + num2str(error, 3))
+    hold off;
+end
 
 
 
 
-%% Ridge Regression
+%% (Optional) Ridge Regression
 
 
 

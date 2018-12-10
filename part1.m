@@ -48,10 +48,10 @@ y = temperature(x);
 figure(3);
 
 subplot(3,1,1);
-A = 20; b = mean(y); phi = 120;
+X = 20; b = mean(y); phi = 120;
 T = 365 / (2 * pi);
 
-z = A * sin((x - phi)/T) + b;
+z = X * sin((x - phi)/T) + b;
 error = norm(y - z')^2 / length(x);
 hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
 title("Fit data with sin(x)-liked function (error = " + num2str(error, 3) + ")");
@@ -110,25 +110,32 @@ annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 x = (1:365*2)';
 T_yr = 365.25;
 t = [1:10] * 365.25;  % Cycle: [1 2 3 4 ... 10]
-% t = [1:10 1/T_yr 30/T_yr 30/T_yr 60/T_yr 120/T_yr] * 365.25;
-A = [ ones(size(x)) x sin(x*t) cos(x*t)]; % 
-A = A ./ max(A); % Regularize (not strictly correct though...)
+X = [ ones(size(x)) x sin(x/t) cos(x/t)]; % 
+X = X ./ max(X); % Regularize (not strictly correct though...)
 
 % Tada! This is the basis matrix
-A;
+X;
 
 %% 1.5 Factor of Gobal Warming
 
 x = (1:365*2)';
+
 T_yr = 365.25;
-t = 365.25 * [ 
+
+% Add the factors you wish to the list
+t = T_yr * [ 
+     0.50  % Undergrad Final Exam Cycle
      1.00  % Seasonal Cycle
+     4.00  % US President Election]
     10.78  % Solar Cycle
-     4.00  % US President Election
+    18.60  % Moon Declination angle changing cycle
+    88.00  % Volcanic Activity Periodicity
+   178.00  % Tidal Cycle
 ]';
 
-A = [ ones(size(x)) x sin(x*t) cos(x*t)];
-A = A ./ max(A);
+X = [ ones(size(x)) x sin(x*t) cos(x*t)];
+
+X = X ./ max(X);
 
 
 
