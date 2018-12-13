@@ -16,9 +16,7 @@ do
   cat 724096-14706-$f.op >> McGuireAFB.op
 done
 
-
 grep -v YEARMODA McGuireAFB.op > junk1
 
 cut -c 14-31 junk1 > McGuireAFB.dat
 cut -c 14-22 junk1 > Dates.dat
-
