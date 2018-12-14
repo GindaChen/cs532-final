@@ -10,13 +10,13 @@ temperature = csvread("matlabdata/McGuireAFB.data.csv");
 dates = csvread("matlabdata/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
 
 
-%% 1.1 Show basic data property
+%% 1.1 Show the entire data (55 years)
 figure(1)
 plot(dates, temperature);
 datetick('x', 'yyyy-mm-dd');
 title('McGuire AFB Temperature 1955-2010');
 
-%% 1.2 See data in different ranges
+%% 1.2 See data in different ranges of years (11, 5, 2)
 figure(2)
 
 subplot(3,1,1)   % [11 Years]

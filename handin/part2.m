@@ -27,16 +27,17 @@ t = c * [
     10.78  % Solar Cycle
     18.60  % Moon Declination angle changing cycle
 ]';
-u = x./t;
+u = x./t;                  % u: the spanned 
 o = ones(size(x));
 
-A        = [ sin(u) cos(u) o x ];
-A = A ./ max(A);
-wdefault = [ ones(length(t) * 2,1) * 2; 10; 10];
+A        = [ sin(u) cos(u) o ];
+A = A ./ max(A); % Regularization
 
 % Naively Use LASSO and Ridge regression and see the outcome
 
-for lambda = [0.1 1 10]
+reg_params = [0.1 1 10]; % the set of lambdas used for training
+wdefault = [ ones(length(t) * 2,1) * 2; 10; ];
+for lambda = reg_params
     compare_methods(A, x, y, wdefault, lambda);
 end
 
