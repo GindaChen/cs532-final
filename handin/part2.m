@@ -9,8 +9,8 @@
 % and it is also hard to stop the process...
 
 %% 1. Data Preperation
-temperature = csvread("matlabdata/McGuireAFB.data.csv");
-dates = csvread("matlabdata/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
+temperature = csvread('McGuireAFB.data.csv');
+dates = csvread('McGuireAFB.time.csv'); % The date seemed to be a little wierd...
 
 %% 2. Compare LASSO vs Ridge
 

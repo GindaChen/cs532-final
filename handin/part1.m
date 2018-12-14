@@ -6,8 +6,8 @@
 % Load Data
 %    - date: record of date
 %    - temperature: the corresponding temperature 
-temperature = csvread("matlabdata/McGuireAFB.data.csv");
-dates = csvread("matlabdata/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
+temperature = csvread('McGuireAFB.data.csv');
+dates = csvread('McGuireAFB.time.csv'); % The date seemed to be a little wierd...
 
 
 %% 1.1 Show the entire data (55 years)
@@ -54,7 +54,7 @@ T = 365 / (2 * pi);
 z = X * sin((x - phi)/T) + b;
 error = norm(y - z')^2 / length(x);
 hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
-title("Fit data with sin(x)-liked function (error = " + num2str(error, 3) + ")");
+title(['Fit data with sin(x)-liked function (error = ', num2str(error, 3), ')']);
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
@@ -70,7 +70,7 @@ T = 365 / (2 * pi);
 z = A1 * sin((x - phi1)/T) + A2 * cos( (x - phi2)/T) + b;
 error = norm(y - z')^2 / length(x);
 hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
-title("Fit data with sin(x)+cos(x)-liked function (error = " + num2str(error, 3) + ")");
+title(['Fit data with sin(x)+cos(x)-liked function (error = ', num2str(error, 3), ')']);
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
@@ -92,7 +92,7 @@ error = norm(y - z')^2 / length(x)
 hold on; 
 plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); 
 hold off;
-title("Fit data with sin(x)+sin(x/2)-liked function (error = " + num2str(error, 3) + ")");
+title(['Fit data with sin(x)+sin(x/2)-liked function (error = ', num2str(error, 3), ')']);
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
@@ -102,7 +102,7 @@ annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 % Online illustration of the activity
 % https://beta.observablehq.com/@gindachen/local-warming
 
-% Since we are using a combination of sin/cos to construct our "data"
+% Since we are using a combination of sin/cos to construct our 'data'
 % We need an efficient way to construct this matrix `A`.
 % This is called a basis matrix, which contains orthogonal bases
 % as different columns.
