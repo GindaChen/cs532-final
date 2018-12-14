@@ -31,7 +31,7 @@ u = x * (1 ./ t);
 o = ones(size(x));
 
 A        = [ sin(u) cos(u) o ];
-A = A * (1 ./ max(A)); % Regularization
+A = A .* (1 ./ max(A)); % Regularization
 
 % Naively Use LASSO and Ridge regression and see the outcome
 
@@ -71,7 +71,7 @@ wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
 u = x * (1 ./ t);
 o = ones(size(x));
 A        = [ sin(u) cos(u) o x];
-A = A * (1 ./ max(A));; % Regularize each column
+A = A .* (1 ./ max(A)); % Regularize each column
 wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
 
 

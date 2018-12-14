@@ -140,4 +140,4 @@ t = T_yr * [
 
 X = [ ones(size(x)) x sin(x*t) cos(x*t)];
 
-X = X * (1 ./ max(X)); 
+X = X .* (1 ./ max(X)); 
