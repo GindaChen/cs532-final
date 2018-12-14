@@ -1,6 +1,6 @@
 function [w, it] = lasso( A, b, w, lambda )
 
-    MAX_ITER = 1e6;         % maximum number of iterations
+    MAX_ITER = 5e4;         % maximum number of iterations
     TOL      = 1e-6;        % convergence tolerance	
     tau      = 1/norm(A)^2; % choose stepsize
     [m,n] = size(A);
