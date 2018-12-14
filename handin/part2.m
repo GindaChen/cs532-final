@@ -27,11 +27,11 @@ t = c * [
     10.78  % Solar Cycle
     18.60  % Moon Declination angle changing cycle
 ]';
-u = x./t;                  % u: the spanned 
+u = x * (1 ./ t);
 o = ones(size(x));
 
 A        = [ sin(u) cos(u) o ];
-A = A ./ max(A); % Regularization
+A = A * (1 ./ max(A)); % Regularization
 
 % Naively Use LASSO and Ridge regression and see the outcome
 
@@ -61,17 +61,17 @@ t = c * [
 ]';
 
 % 4.1 Naive linear term
-u = x./t;
+u = x * (1 ./ t);
 o = ones(size(x));
 A        = [ sin(u) cos(u) o x];
 wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
 
 
 % 4.2 Regularization of linear term
-u = x./t;
+u = x * (1 ./ t);
 o = ones(size(x));
 A        = [ sin(u) cos(u) o x];
-A = A ./ max(A); % Regularize each column
+A = A * (1 ./ max(A));; % Regularize each column
 wdefault = [ ones(length(t) * 2,1) * 2000; 10; 10;  ];
 
 

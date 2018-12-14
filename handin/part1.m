@@ -117,8 +117,8 @@ t = [1, 2, 4] * T_yr;    %    T: cycles of the sin/cos function
 one_column = ones(length(x), 1); % a vector column represent 1
 % one_column = ones(size(x)); % Alternativel
 
-X = [ sin(x ./ t)   cos(x ./ t) one_column  x  ]; % 
-X = X ./ max(X); % Regularize (not strictly correct though...)
+X = [ sin(x * (1./ t))   cos(x * (1./ t)) one_column  x  ]; % 
+X = X * (1 ./ max(X)); % Regularize (not strictly correct though...)
 
 % Tada! This is the basis matrix
 X
@@ -140,4 +140,4 @@ t = T_yr * [
 
 X = [ ones(size(x)) x sin(x*t) cos(x*t)];
 
-X = X ./ max(X);
+X = X * (1 ./ max(X)); 
