@@ -1,13 +1,10 @@
 %% Part1 Warm-up and Basis Function
 
-% Online version of the activity:
-% https://beta.observablehq.com/@gindachen/local-warming
-
 % Load Data
 %    - date: record of date
 %    - temperature: the corresponding temperature 
-temperature = csvread("matlabdata/McGuireAFB.data.csv");
-dates = csvread("matlabdata/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
+temperature = csvread("data/McGuireAFB.data.csv");
+dates = csvread("data/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
 
 
 %% 1.1 Show basic data property
@@ -15,6 +12,9 @@ figure(1)
 plot(dates, temperature);
 datetick('x', 'yyyy-mm-dd');
 title('McGuire AFB Temperature 1955-2010');
+
+%%% ? How would you fit the graph?
+
 
 %% 1.2 See data in different ranges
 figure(2)
@@ -98,10 +98,6 @@ annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
 
 %% 1.4 How to build a Basis Function (Matrix)
-
-% Online illustration of the activity
-% https://beta.observablehq.com/@gindachen/local-warming
-
 % Since we are using a combination of sin/cos to construct our "data"
 % We need an efficient way to construct this matrix `A`.
 % This is called a basis matrix, which contains orthogonal bases
@@ -111,17 +107,14 @@ annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 % [ x1 sin(x1) sin(2*x1) cos(x1) cos(2*x1)]
 % [ x2 sin(x2) sin(2*x2) cos(x2) cos(2*x2)]
 
-x = (1:3)';                 %    x: x-parameter of the data
-T_yr = 365.25;              % T_yr: represent a year      
-t = [1, 2, 4] * T_yr;    %    T: cycles of the sin/cos function
-one_column = ones(length(x), 1); % a vector column represent 1
-% one_column = ones(size(x)); % Alternativel
-
-X = [ sin(x ./ t)   cos(x ./ t) one_column  x  ]; % 
+x = (1:365*2)';
+T_yr = 365.25;
+t = [1:10] * 365.25;  % Cycle: [1 2 3 4 ... 10]
+X = [ ones(size(x)) x sin(x/t) cos(x/t)]; % 
 X = X ./ max(X); % Regularize (not strictly correct though...)
 
 % Tada! This is the basis matrix
-X
+X;
 
 %% 1.5 Factor of Gobal Warming
 

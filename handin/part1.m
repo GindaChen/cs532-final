@@ -6,17 +6,17 @@
 % Load Data
 %    - date: record of date
 %    - temperature: the corresponding temperature 
-temperature = csvread("matlabdata/McGuireAFB.data.csv");
-dates = csvread("matlabdata/McGuireAFB.time.csv"); % The date seemed to be a little wierd...
+temperature = csvread('McGuireAFB.data.csv');
+dates = csvread('McGuireAFB.time.csv'); % The date seemed to be a little wierd...
 
 
-%% 1.1 Show basic data property
+%% 1.1 Show the entire data (55 years)
 figure(1)
 plot(dates, temperature);
 datetick('x', 'yyyy-mm-dd');
 title('McGuire AFB Temperature 1955-2010');
 
-%% 1.2 See data in different ranges
+%% 1.2 See data in different ranges of years (11, 5, 2)
 figure(2)
 
 subplot(3,1,1)   % [11 Years]
@@ -54,7 +54,7 @@ T = 365 / (2 * pi);
 z = X * sin((x - phi)/T) + b;
 error = norm(y - z')^2 / length(x);
 hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
-title("Fit data with sin(x)-liked function (error = " + num2str(error, 3) + ")");
+title(['Fit data with sin(x)-liked function (error = ', num2str(error, 3), ')']);
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
@@ -70,7 +70,7 @@ T = 365 / (2 * pi);
 z = A1 * sin((x - phi1)/T) + A2 * cos( (x - phi2)/T) + b;
 error = norm(y - z')^2 / length(x);
 hold on; plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); hold off;
-title("Fit data with sin(x)+cos(x)-liked function (error = " + num2str(error, 3) + ")");
+title(['Fit data with sin(x)+cos(x)-liked function (error = ', num2str(error, 3), ')']);
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
@@ -92,7 +92,7 @@ error = norm(y - z')^2 / length(x)
 hold on; 
 plot(x,y, ':','LineWidth', 1);  plot(x,z, 'LineWidth',2); 
 hold off;
-title("Fit data with sin(x)+sin(x/2)-liked function (error = " + num2str(error, 3) + ")");
+title(['Fit data with sin(x)+sin(x/2)-liked function (error = ', num2str(error, 3), ')']);
 D = '$$y = 38 sin(\frac{2 \pi}{365} (x - 120 )) )$$';
 annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 
@@ -102,7 +102,7 @@ annotation(gcf,'textbox',[0,0,1,1],'string',D,'interpreter','latex');
 % Online illustration of the activity
 % https://beta.observablehq.com/@gindachen/local-warming
 
-% Since we are using a combination of sin/cos to construct our "data"
+% Since we are using a combination of sin/cos to construct our 'data'
 % We need an efficient way to construct this matrix `A`.
 % This is called a basis matrix, which contains orthogonal bases
 % as different columns.
@@ -117,8 +117,8 @@ t = [1, 2, 4] * T_yr;    %    T: cycles of the sin/cos function
 one_column = ones(length(x), 1); % a vector column represent 1
 % one_column = ones(size(x)); % Alternativel
 
-X = [ sin(x ./ t)   cos(x ./ t) one_column  x  ]; % 
-X = X ./ max(X); % Regularize (not strictly correct though...)
+X = [ sin(x * (1./ t))   cos(x * (1./ t)) one_column  x  ]; % 
+X = X * (1 ./ max(X)); % Regularize (not strictly correct though...)
 
 % Tada! This is the basis matrix
 X
@@ -140,4 +140,4 @@ t = T_yr * [
 
 X = [ ones(size(x)) x sin(x*t) cos(x*t)];
 
-X = X ./ max(X);
+X = X .* (1 ./ max(X)); 
